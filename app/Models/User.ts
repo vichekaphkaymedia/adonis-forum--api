@@ -8,7 +8,6 @@ import {
   HasMany,
 } from '@ioc:Adonis/Lucid/Orm'
 import Post from './Post'
-import { Has } from '@ioc:Adonis/Lucid/Relations'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
