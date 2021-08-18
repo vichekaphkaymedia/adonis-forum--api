@@ -1,5 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import Category from './Category'
+import User from './User'
 
 export default class Post extends BaseModel {
   @column({ isPrimary: true })
@@ -22,4 +24,10 @@ export default class Post extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @belongsTo(() => Category)
+  public category: BelongsTo<typeof Category>
+
+  @belongsTo(() => User)
+  public user: BelongsTo<typeof User>
 }
