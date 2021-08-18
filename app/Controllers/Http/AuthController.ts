@@ -9,7 +9,7 @@ export default class AuthController {
         const token = await auth.login(user)
         return token
     }
-    
+
     public async login({request,auth}:HttpContextContract){
         const {email,password } = request.all()
         try{
