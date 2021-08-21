@@ -28,5 +28,5 @@ Route.get('/', async () => {
 Route.group(() => {
     Route.post('auth/register','AuthController.register')
     Route.post('auth/login','AuthController.login')
-    Route.post('posts','PostController.store')
+    Route.post('posts','PostsController.store').middleware('auth')
 }).prefix('api')
