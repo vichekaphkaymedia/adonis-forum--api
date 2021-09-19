@@ -32,4 +32,5 @@ Route.group(() => {
     Route.post('posts','PostsController.store').middleware('auth')
     Route.get('posts/:id','PostsController.show').middleware('auth')
     Route.patch('posts/:id','PostsController.update').middleware('auth')
+    Route.delete('posts/:id','PostsController.destroy').middleware('auth')
 }).prefix('api')

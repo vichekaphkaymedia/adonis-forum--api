@@ -34,4 +34,8 @@ export default class PostsController {
         await post.preload('category')
         return post
     }
+    public async destroy({params}:HttpContextContract){
+        const post = await Post.findOrFail(params.id)
+        return post.delete()
+    }
 }
