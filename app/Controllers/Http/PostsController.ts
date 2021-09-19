@@ -6,6 +6,8 @@ export default class PostsController {
     public async store({request,auth}:HttpContextContract){
         const validatedData = await  request.validate(PostValidator)
         const post = await auth.user?.related('posts').create(validatedData)
+        await post?.preload('user')
+        await post?.preload('category')
         return post
     }
     public async show({params}:HttpContextContract){
