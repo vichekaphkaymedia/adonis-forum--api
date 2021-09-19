@@ -3,6 +3,12 @@ import Post from 'App/Models/Post'
 import PostValidator from 'App/Validators/PostValidator'
 
 export default class PostsController {
+    public async  index() {
+        const posts = Post.query()
+            .preload('user')
+            .preload('category')
+        return posts;
+    }
     public async store({request,auth}:HttpContextContract){
         const validatedData = await  request.validate(PostValidator)
         const post = await auth.user?.related('posts').create(validatedData)

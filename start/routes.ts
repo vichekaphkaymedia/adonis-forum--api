@@ -28,6 +28,7 @@ Route.get('/', async () => {
 Route.group(() => {
     Route.post('auth/register','AuthController.register')
     Route.post('auth/login','AuthController.login')
+    Route.get('posts','PostsController.index').middleware('auth')
     Route.post('posts','PostsController.store').middleware('auth')
     Route.get('posts/:id','PostsController.show').middleware('auth')
 }).prefix('api')
