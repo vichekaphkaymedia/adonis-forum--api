@@ -8,6 +8,7 @@ export default class PostsController {
         const posts = Post.query()
         .preload('user')
         .preload('category')
+        .preload('comments')
         return posts;
     }
     public async store({request,auth}:HttpContextContract){
@@ -15,6 +16,7 @@ export default class PostsController {
         const post = await auth.user?.related('posts').create(validatedData)
         await post?.preload('user')
         await post?.preload('category')
+        await post?.preload('comments')
         return post
     }
     public async show({params}:HttpContextContract){
@@ -22,6 +24,7 @@ export default class PostsController {
         .where('id',params.id)
         .preload('user')
         .preload('category')
+        .preload('comments')
         .firstOrFail()
         return post
     }
@@ -32,6 +35,7 @@ export default class PostsController {
         await post.save()
         await post.preload('user')
         await post.preload('category')
+        await post.preload('comments')
         return post
     }
     public async destroy({params}:HttpContextContract){
