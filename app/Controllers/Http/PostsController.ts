@@ -4,11 +4,22 @@ import PostValidator from 'App/Validators/PostValidator'
 import UpdatePostValidator from 'App/Validators/UpdatePostValidator';
 
 export default class PostsController {
-    public async  index() {
-        const posts = Post.query()
-        .preload('user')
-        .preload('category')
-        .preload('comments')
+    public async  index({request}:HttpContextContract) {
+        const page = request.input('page',1)
+        const limit = request.input('limit',10)
+        const userId = request.input('user_id')
+        const categoryId = request.input('category_id')
+        const posts = Post.query().
+            if(userId,(query) => {
+                query.where('user_id',userId)
+            }).
+            if(categoryId,(query) => {
+                query.where('category_id',categoryId)
+            })
+            .preload('user')
+            .preload('category')
+            .preload('comments')
+            .paginate(page,limit)
         return posts;
     }
     public async store({request,auth}:HttpContextContract){
