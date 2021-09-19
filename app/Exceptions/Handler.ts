@@ -15,9 +15,31 @@
 
 import Logger from '@ioc:Adonis/Core/Logger'
 import HttpExceptionHandler from '@ioc:Adonis/Core/HttpExceptionHandler'
+import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class ExceptionHandler extends HttpExceptionHandler {
   constructor () {
     super(Logger)
+  }
+
+  public async handle(error:any,ctx:HttpContextContract){
+    if(error.code === 'E_ROW_NOT_FOUND'){
+        return ctx.response.notFound({message: '404 Not Found',code:error.code})
+    }
+    if(error.code === 'E_UNAUTHORIZED_ACCESS'){
+        return ctx.response.unauthorized({message: 'Unauthenticated',code:error.code})
+    }
+    if(error.code === 'E_INVALID_AUTH_UID'){
+        return ctx.response.badRequest({message: 'User Not Found',code:error.code})
+    }
+    if(error.code === 'E_INVALID_AUTH_PASSWORD'){
+        return ctx.response.badRequest({message: "Incorrect Password",code:error.code})
+    }
+    if (error.code === 'E_VALIDATION_FAILURE') {
+        return ctx.response.status(422).send({errors:error.messages.errors,code: error.code})
+    }
+    console.error();
+
+    return super.handle(error,ctx)
   }
 }

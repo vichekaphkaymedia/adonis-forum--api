@@ -12,11 +12,7 @@ export default class AuthController {
 
     public async login({request,auth,response}:HttpContextContract){
         const {email,password } = request.all()
-        try{
-            const token = await auth.attempt(email,password)
-            return response.ok({data: token})
-        }catch(error){
-            return 'we could not verify your credentials'
-        }
+        const token = await auth.attempt(email,password)
+        return response.ok({data: token})
     }
 }
