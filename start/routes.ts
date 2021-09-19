@@ -33,4 +33,5 @@ Route.group(() => {
     Route.get('posts/:id','PostsController.show').middleware('auth')
     Route.patch('posts/:id','PostsController.update').middleware('auth')
     Route.delete('posts/:id','PostsController.destroy').middleware('auth')
+    Route.post('post/:post_id/comment','CommentController.store').middleware('auth')
 }).prefix('api')
