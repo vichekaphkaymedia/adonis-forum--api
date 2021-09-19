@@ -28,10 +28,10 @@ Route.get('/', async () => {
 Route.group(() => {
     Route.post('auth/register','AuthController.register')
     Route.post('auth/login','AuthController.login')
-    Route.get('posts','PostsController.index').middleware('auth')
-    Route.post('posts','PostsController.store').middleware('auth')
-    Route.get('posts/:id','PostsController.show').middleware('auth')
-    Route.patch('posts/:id','PostsController.update').middleware('auth')
-    Route.delete('posts/:id','PostsController.destroy').middleware('auth')
-    Route.post('posts/:post_id/comments','CommentsController.store').middleware('auth')
+    Route.resource('posts','PostsController').apiOnly().middleware({
+        store: 'auth',
+        update: 'auth',
+        destroy: 'auth'
+    })
+    Route.resource('posts.comments','CommentsController').only(['store']).middleware({store: 'auth'})
 }).prefix('api')
