@@ -25,37 +25,36 @@ export default class PostsController {
             .preload('category')
             .preload('comments')
             .paginate(page,limit)
-        return posts;
+        return posts
     }
-    public async store({request,auth}:HttpContextContract){
+    public async store({request,auth,response}:HttpContextContract){
         const validatedData = await request.validate(PostValidator)
         const post = await auth.user?.related('posts').create(validatedData)
         await post?.preload('user')
         await post?.preload('category')
         await post?.preload('comments')
-        return post
+        return response.created({data: post})
     }
-    public async show({params}:HttpContextContract){
-        const post = await Post.query()
-        .where('id',params.id)
-        .preload('user')
-        .preload('category')
-        .preload('comments')
-        .firstOrFail()
-        return post
-    }
-    public async update({request,params}:HttpContextContract) {
+    public async show({params,response}:HttpContextContract){
         const post = await Post.findOrFail(params.id)
-        const validatedData = await  request.validate(UpdatePostValidator);
+        await post.preload('user')
+        await post.preload('category')
+        await post.preload('comments')
+        return response.ok({data: post})
+    }
+    public async update({request,params,response}:HttpContextContract) {
+        const post = await Post.findOrFail(params.id)
+        const validatedData = await request.validate(UpdatePostValidator);
         post.merge(validatedData)
         await post.save()
         await post.preload('user')
         await post.preload('category')
         await post.preload('comments')
-        return post
+        return response.ok({data: post})
     }
-    public async destroy({params}:HttpContextContract){
+    public async destroy({params,response}:HttpContextContract){
         const post = await Post.findOrFail(params.id)
-        return post.delete()
+        await post.delete()
+        return response.noContent()
     }
 }
