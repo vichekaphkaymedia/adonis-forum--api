@@ -7,14 +7,14 @@ export default class AuthController {
         const validated = await request.validate(RegisterValidator)
         const user = await User.create(validated)
         const token = await auth.login(user)
-        return token
+        return response.ok({data: token})
     }
 
-    public async login({request,auth}:HttpContextContract){
+    public async login({request,auth,response}:HttpContextContract){
         const {email,password } = request.all()
         try{
-            const token = auth.attempt(email,password)
-            return token
+            const token = await auth.attempt(email,password)
+            return response.ok({data: token})
         }catch(error){
             return 'we could not verify your credentials'
         }

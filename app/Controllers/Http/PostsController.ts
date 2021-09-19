@@ -5,7 +5,7 @@ import PostValidator from 'App/Validators/PostValidator'
 import UpdatePostValidator from 'App/Validators/UpdatePostValidator';
 
 export default class PostsController {
-    public async  index({request}:HttpContextContract) {
+    public async  index({request,response}:HttpContextContract) {
         const validated = await request.validate(PostSortingValidator)
         let sortBy = validated.sortBy || 'created_at'
         let orderBy = validated.orderBy || 'desc'
@@ -13,7 +13,7 @@ export default class PostsController {
         const limit = request.input('limit',10)
         const userId = request.input('user_id')
         const categoryId = request.input('category_id')
-        const posts = Post.query().
+        const posts = await Post.query().
             if(userId,(query) => {
                 query.where('user_id',userId)
             }).
@@ -25,7 +25,7 @@ export default class PostsController {
             .preload('category')
             .preload('comments')
             .paginate(page,limit)
-        return posts
+        return response.ok(posts)
     }
     public async store({request,auth,response}:HttpContextContract){
         const validatedData = await request.validate(PostValidator)
