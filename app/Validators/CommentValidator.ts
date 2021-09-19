@@ -25,13 +25,7 @@ export default class CommentValidator {
 	 *    ```
 	 */
     public schema = schema.create({
-        content: schema.string(),
-        user_id: schema.number([
-            rules.exists({table:'categories',column:'id'})
-        ]),
-        post_id: schema.number([
-            rules.exists({table:'categories',column:'id'})
-        ])
+        content: schema.string()
     })
 
 	/**
