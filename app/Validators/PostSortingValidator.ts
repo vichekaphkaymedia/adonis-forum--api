@@ -26,7 +26,7 @@ export default class PostSortingValidator {
 	 */
     public schema = schema.create({
         sortBy: schema.enum.optional(['id','user_id','category_id','title','created_at']),
-        orderBy: schema.enum.optional(['asc','desc'])
+        orderBy: schema.enum.optional(['asc','desc'] as const)
     })
 
 	/**
